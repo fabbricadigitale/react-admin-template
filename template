@@ -9,7 +9,7 @@ copy_from_git () {
 }
 
 install_excel () {
-  [ ! -d app/button ] && mkdir app/button
+  [ ! -d app/src/button ] && mkdir app/src/button
   button_files=('Download' 'DownloadButton' 'Upload')
   input_files=('FileInput')
   for file in "${button_files[@]}"
@@ -24,7 +24,7 @@ install_excel () {
 }
 
 install_pdf () {
-  [ ! -d app/button ] && mkdir app/button
+  [ ! -d app/src/button ] && mkdir app/src/button
   button_files=('PdfButton')
   for file in "${button_files[@]}"
   do
@@ -34,9 +34,9 @@ install_pdf () {
 }
 
 install_countries () {
-  [ ! -d app/field ] && mkdir app/field
+  [ ! -d app/src/field ] && mkdir app/src/field
   root_files=('App.countries')
-  resource_files=('countries index.countries')
+  resource_files=('countries' 'index.countries')
   field_files=('FlagField')
   for file in "${root_files[@]}"
   do
