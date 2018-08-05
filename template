@@ -2,8 +2,8 @@
 REPO="https://raw.githubusercontent.com/matteolc/react-admin-template/master/"
 
 copy_from_git () {
-  src_filename = $1;
-  dst_filename = $1;
+  src_filename=$1;
+  dst_filename=$1;
   [-e dst_filename] && rm dst_filename;
   wget "${REPO}${src_filename}" -O dst_filename  
 }
