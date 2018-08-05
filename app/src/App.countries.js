@@ -11,10 +11,10 @@ import {
   UserCreate,
   UserEdit,
   UserIcon,
-  // CountryIcon,
-  // CountryList,
-  // CountryEdit,
-  // CountryShow,
+  CountryIcon,
+  CountryList,
+  CountryEdit,
+  CountryShow,
 } from './resources';
 
 const GetBrowserLanguage = () => {
@@ -48,12 +48,12 @@ const App = () =>
         authProvider={authClient}
         dataProvider={apiClient}>
     {permissions => [
-      // <Resource
-      //   name="countries"
-      //   icon={CountryIcon}
-      //   list={CountryList}
-      //   edit={permissions === ROLE_ADMIN && CountryEdit}
-      //   show={CountryShow} />,      
+      <Resource
+        name="countries"
+        icon={CountryIcon}
+        list={CountryList}
+        edit={permissions === ROLE_ADMIN && CountryEdit}
+        show={CountryShow} />,      
       permissions === ROLE_ADMIN && <Resource
       name="users"
       list={UserList}
