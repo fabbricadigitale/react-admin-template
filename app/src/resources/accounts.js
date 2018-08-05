@@ -4,7 +4,7 @@ import {
   Edit,
   SimpleForm,
 } from 'react-admin';
-import MuiAccountIcon from '@material-ui/icons/AccountBox';
+import MuiAccountIcon from '@material-ui/icons/AccountCircle';
 export { MuiAccountIcon as AccountIcon };
 
 const AccountTitle = ({ record }) => {
