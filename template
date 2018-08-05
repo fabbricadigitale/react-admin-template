@@ -4,12 +4,12 @@ REPO="https://raw.githubusercontent.com/matteolc/react-admin-template/master/"
 copy_from_git () {
   src_filename=$1;
   dst_filename=$1;
-  [-e dst_filename] && rm dst_filename;
-  wget "${REPO}${src_filename}" -O dst_filename  
+  [ -e $dst_filename ] && rm $dst_filename;
+  wget "${REPO}${src_filename}" -O $dst_filename  
 }
 
 install_excel () {
-  [-e app/button] && mkdir app/button
+  [ -e app/button ] && mkdir app/button
   button_files=('Download' 'DownloadButton' 'Upload')
   input_files=('FileInput')
   for file in "${button_files[@]}"
@@ -24,7 +24,7 @@ install_excel () {
 }
 
 install_pdf () {
-  [-e app/button] && mkdir app/button
+  [ -e app/button ] && mkdir app/button
   button_files=('PdfButton')
   for file in "${button_files[@]}"
   do
@@ -34,7 +34,7 @@ install_pdf () {
 }
 
 install_countries () {
-  [-e app/field] && mkdir app/field
+  [ -e app/field ] && mkdir app/field
   root_files=('App.countries')
   resource_files=('countries index.countries')
   field_files=('FlagField')
@@ -84,8 +84,8 @@ copy_from_git 'app/package.json'
 cd app && yarn install && cd ..
 
 while true; do
-    read -p "Do you want to add support for Excel data import & export?" yn_excel
-    case $yn_excel in
+    read -p "Do you want to add support for Excel data import & export?" yn
+    case $yn in
         [Yy]* ) install_excel; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
@@ -93,8 +93,8 @@ while true; do
 done
 
 while true; do
-    read -p "Do you want to add support for PDF?" yn_pdf
-    case $yn_pdf in
+    read -p "Do you want to add support for PDF?" yn
+    case $yn in
         [Yy]* ) install_pdf; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
@@ -102,8 +102,8 @@ while true; do
 done
 
 while true; do
-    read -p "Do you want to add support for countries?" yn_countries
-    case $yn_countries in
+    read -p "Do you want to add support for countries?" yn
+    case $yn in
         [Yy]* ) install_countries; break;;
         [Nn]* ) exit;;
         * ) echo "Please answer yes or no.";;
