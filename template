@@ -10,12 +10,18 @@ copy_from_git () {
 
 install_excel () {
   [ ! -d app/src/button ] && mkdir app/src/button
-  button_files=('Download' 'DownloadButton' 'Upload')
+  [ ! -d app/src/component ] && mkdir app/src/component
+  button_files=('DownloadButton')
+  component_files=('ActionsWithExcel ExportToExcel ImportFromExcel'
   input_files=('FileInput')
   for file in "${button_files[@]}"
   do
    copy_from_git "app/src/button/${file}.js"
   done
+  for file in "${component_files[@]}"
+  do
+   copy_from_git "app/src/component/${file}.js"
+  done  
   for file in "${input_files[@]}"
   do
    copy_from_git "app/src/input/${file}.js"
@@ -24,11 +30,11 @@ install_excel () {
 }
 
 install_pdf () {
-  [ ! -d app/src/button ] && mkdir app/src/button
-  button_files=('PdfButton')
-  for file in "${button_files[@]}"
+  [ ! -d app/src/component ] && mkdir app/src/component
+  component_files=('PrintToPdf')
+  for file in "${component_files[@]}"
   do
-   copy_from_git "app/src/button/${file}.js"
+   copy_from_git "app/src/component/${file}.js"
   done  
   cd app && yarn add axios && cd ..
 }
@@ -61,9 +67,8 @@ create-react-app app
 mkdir app/src/resources
 mkdir app/src/input
 
-base_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types')
+base_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types', 'theme')
 resource_files=('accounts' 'users' 'index')
-input_files=('InlineTextInput' 'ToggleInput')
 
 for file in "${base_files[@]}"
 do
@@ -72,10 +77,6 @@ done
 for file in "${resource_files[@]}"
 do
    copy_from_git "app/src/resources/${file}.js"
-done
-for file in "${input_files[@]}"
-do
-   copy_from_git "app/src/input/${file}.js"
 done
 
 copy_from_git 'app/public/index.html'
