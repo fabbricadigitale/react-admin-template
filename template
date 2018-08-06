@@ -12,7 +12,7 @@ install_excel () {
   [ ! -d app/src/button ] && mkdir app/src/button
   [ ! -d app/src/component ] && mkdir app/src/component
   button_files=('DownloadButton')
-  component_files=('ActionsWithExcel ExportToExcel ImportFromExcel'
+  component_files=('ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel')
   input_files=('FileInput')
   for file in "${button_files[@]}"
   do
