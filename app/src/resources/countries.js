@@ -21,6 +21,7 @@ import {
     SelectArrayInput,
     NumberInput,
 } from 'react-admin';
+import { withStyles } from '@material-ui/core/styles';
 import ActionsWithExcel from '../component/ActionsWithExcel';
 import PrintToPdf from '../button/PrintToPdf';
 import FlagField from '../field/FlagField';
@@ -48,7 +49,7 @@ const Filters = (props) => (
     </Filter>
 );
 
-export const CountryList = (props) => (
+const PlainCountryList = ({ classes, ...props }) => (
     <List
         {...props}
         sort={{
@@ -56,24 +57,46 @@ export const CountryList = (props) => (
             order: 'ASC'
         }}
         title="Countries"
-        actions={<ActionsWithExcel />}
+        actions={<ActionsWithXls />}
         filters={<Filters />}
     >
             <Responsive
                 medium={
-                    <Datagrid>
+                    <Datagrid classes={{ table: classes.table }}>
                         <TextField source="name" />
-                        <TextField source="region" />
-                        <TextField source="subregion" />
+                        <TextField 
+                            source="region" 
+                            headerClassName={classes.hiddenOnSmallScreens}
+                            cellClassName={classes.hiddenOnSmallScreens}                             
+                        />
+                        <TextField 
+                            source="subregion" 
+                            headerClassName={classes.hiddenOnSmallScreens}
+                            cellClassName={classes.hiddenOnSmallScreens}                            
+                            />
                         <ChipField source="currency-code" label="Currency" />
                         <FunctionField
                             label="Dial"
                             render={record => `${record["international-prefix"]}${record["country-code"]}`}
                         />
-                        <ChipField source="alpha3" label="Alpha-3" />
-                        <FlagField style={{ textAlign: 'center' }} source="alpha3" label="Flag" sortable={false} />
-                        <DateField utc showTime source="updated-at" label="Last Update" />
-                        <PrintToPdf />
+                        <ChipField 
+                            source="alpha3" 
+                            label="Alpha-3" 
+                        />
+                        <FlagField 
+                            style={{ textAlign: 'center' }} 
+                            source="alpha3" 
+                            label="Flag" 
+                            sortable={false} 
+                        />
+                        <DateField 
+                            showTime 
+                            source="updated-at" 
+                            label="Last Update" 
+                            headerClassName={classes.hiddenOnSmallScreens}
+                            cellClassName={classes.hiddenOnSmallScreens}                             
+                        />
+                        <PdfButton />
                         <EditButton />
                         <ShowButton />
                     </Datagrid>
@@ -81,6 +104,8 @@ export const CountryList = (props) => (
             />
     </List>
 );
+
+export const CountryList = withStyles(styles)(PlainCountryList)
 
 const CountryTitle = ({ record }) => record
     ? <span>{record.name}</span>
