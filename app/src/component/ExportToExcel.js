@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import DownloadButton from './DownloadButton';
+import DownloadButton from '../button/DownloadButton';
 import { showNotification as showNotificationAction } from 'react-admin';
 import { stringify } from 'query-string';
 import { baseApiUrl } from '../App';
@@ -9,7 +9,7 @@ import { SESSION_TOKEN } from '../authClient';
 import { snakeCase } from 'lodash';
 import axiosClient from "axios";
 
-class Download extends Component {
+class ExportToExcel extends Component {
 
     download = (done) => {
         const { record, resource, showNotification, related, filterValues, path } = this.props;
@@ -75,7 +75,6 @@ class Download extends Component {
         return <div style={elStyle}>
             <DownloadButton
                 generateTitle={label}
-                loadingTitle="Preparing.."
                 showFullTitle={false}
                 async={true}
                 genFile={this.download}
@@ -84,16 +83,16 @@ class Download extends Component {
     }
 }
 
-Download.propTypes = {
+ExportToExcel.propTypes = {
     resource: PropTypes.string,
     label: PropTypes.string,
     style: PropTypes.object,
 };
 
-Download.defaultProps = {
-    label: "Export",
+ExportToExcel.defaultProps = {
+    label: "Excel",
 };
 
 export default connect(null, {
     showNotification: showNotificationAction,
-})(Download);
+})(ExportToExcel);

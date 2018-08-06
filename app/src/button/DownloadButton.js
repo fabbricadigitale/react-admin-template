@@ -1,11 +1,19 @@
 /*global location*/
 /*eslint no-restricted-globals: 0*/
 
-import React, { Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from '@material-ui/RaisedButton';
-import DownloadIcon from '@material-ui/icons/file-download';
-import {green500, grey50} from 'material-ui/styles/colors';
+import classNames from 'classnames';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import MuiDownloadIcon from '@material-ui/icons/GridOn';
+import {green500, grey50} from '@material-ui/core/colors';
+
+const styles = theme => ({
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+});
 
 // from http://stackoverflow.com/questions/283956/
 function saveAs(uri, filename) {
@@ -68,6 +76,7 @@ class DownloadButton extends Component {
       generateTitle,
       fullWidth,
       disabled,
+      classes,
       icon,
     } = this.props;
 
@@ -81,29 +90,38 @@ class DownloadButton extends Component {
       title = showFullTitle
         ? `${downloadTitle} ${this.state.fileData.filename}`
         : downloadTitle
-      return <RaisedButton
+      return <Button
+        variant="contained" 
+        color="primary"
         onClick={this._onDownload}
-        label={title}
-        icon={icon}
         fullWidth={fullWidth}
-        disabled={disabled}
-        backgroundColor={green500}
-        labelColor={grey50}/>
+        disabled={disabled}>
+            {cloneElement(icon, {
+                className: classes.leftIcon,
+            })}
+          {title}
+        </Button>
     }
     if (loading) 
-      return <RaisedButton
-        icon={icon}
-        label={loadingTitle}
+      return <Button
         fullWidth={fullWidth}
-        primary={true}
-        disabled={true}/>
-    return <RaisedButton
-      icon={icon}
+        color='primary'
+        disabled={true}>        
+            {cloneElement(icon, {
+                className: classes.leftIcon,
+            })}
+          {loadingTitle}
+        </Button>
+    return <Button
       onClick={this._onGenerate}
-      label={generateTitle}
       disabled={disabled}
       fullWidth={fullWidth}
-      primary={true}/>
+      color='primary'>
+            {cloneElement(icon, {
+                className: classes.leftIcon,
+            })}
+        {generateTitle}
+      </Button>
   }
 
 }
@@ -118,7 +136,8 @@ DownloadButton.propTypes = {
   fullWidth: PropTypes.bool,
   loadingTitle: PropTypes.string,
   onDownloaded: PropTypes.func,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  classes: PropTypes.object.isRequired,
 }
 
 DownloadButton.defaultProps = {
@@ -127,9 +146,9 @@ DownloadButton.defaultProps = {
   fullWidth: true,
   disabled: false,
   downloadTitle: 'Download',
-  generateTitle: 'Generate file',
-  loadingTitle: 'Loading...',
-  icon: <DownloadIcon/>,
+  generateTitle: 'Export',
+  loadingTitle: 'Preparing..',
+  icon: <MuiDownloadIcon/>,
 }
 
-export default DownloadButton;
+export default withStyles(styles)(DownloadButton);

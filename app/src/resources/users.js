@@ -19,8 +19,9 @@ import {
 } from 'react-admin';
 import { ROLE_ADMIN, ROLE_REGULAR, ROLE_GUEST } from '../types';
 import { capitalize } from 'lodash';
-import MuiUserIcon from '@material-ui/icons/People';
-export { MuiUserIcon as UserIcon };
+import Icon from '@material-ui/core/Icon';
+
+export const UserIcon = () => <Icon className={classNames('fa-menu-icon', 'fa fa-users')} />
 
 const Filters = (props) => (
     <Filter {...props}>

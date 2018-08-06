@@ -4,8 +4,10 @@ import {
   Edit,
   SimpleForm,
 } from 'react-admin';
-import MuiAccountIcon from '@material-ui/icons/AccountCircle';
-export { MuiAccountIcon as AccountIcon };
+import classNames from 'classnames';
+import Icon from '@material-ui/core/Icon';
+
+export const AccountIcon = () => <Icon className={classNames('fa-menu-icon', 'fa fa-user-circle')} />
 
 const AccountTitle = ({ record }) => {
   return <span>{record ? `${record.username}` : ''}</span>;

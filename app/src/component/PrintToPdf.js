@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PrintIcon from 'material-ui/svg-icons/action/print';
-import DownloadButton from './DownloadButton';
+import MuiPrintIcon from '@material-ui/icons/Print';
+import DownloadButton from '../button/DownloadButton';
 import { baseApiUrl } from '../App';
 import { SESSION_TOKEN } from '../authClient';
 import axiosClient from "axios";
 
-class PdfButton extends Component {
+class PrintToPdf extends Component {
     
   download = (done) => {       
   	            
@@ -36,7 +36,7 @@ class PdfButton extends Component {
 
     render() {
         return <DownloadButton 
-            icon={<PrintIcon/>}
+            icon={<MuiPrintIcon/>}
             generateTitle="Print" 
             loadingTitle="Processing.." 
             showFullTitle={false}
@@ -46,9 +46,9 @@ class PdfButton extends Component {
     }
 }	
 	
-PdfButton.propTypes = {
+PrintToPdf.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
 };
 
-export default PdfButton;
+export default PrintToPdf;
