@@ -67,7 +67,7 @@ create-react-app app
 mkdir app/src/resources
 mkdir app/src/input
 
-base_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types', 'theme')
+base_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme')
 resource_files=('accounts' 'users' 'index')
 
 for file in "${base_files[@]}"
