@@ -20,9 +20,8 @@ import {
 import classNames from 'classnames';
 import { ROLE_ADMIN, ROLE_REGULAR, ROLE_GUEST } from '../types';
 import { capitalize } from 'lodash';
-import Icon from '@material-ui/core/Icon';
-
-export const UserIcon = () => <Icon className={classNames('fa-menu-icon', 'fa fa-users')} />
+import { Group as GrommetUserIcon } from 'grommet-icons';
+export { GrommetUserIcon as UserIcon };
 
 const Filters = (props) => (
     <Filter {...props}>

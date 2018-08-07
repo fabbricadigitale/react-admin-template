@@ -104,7 +104,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             var jsonData = json.data.map(dic => {
                 return Object.assign({ id: dic.id }, dic.attributes, dic.meta);
             });                    
-                if (!json.meta['record-count']) {
+                if (json.meta['record-count'] === null) {
                     throw new Error(
                         'The Record-Count or Record-Total is missing in the meta of the HTTP Response. The JSONAPI REST client expects responses for lists of resources to contain this meta with the total number of results to build the pagination.'
                     );

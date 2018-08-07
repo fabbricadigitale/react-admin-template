@@ -4,10 +4,8 @@ import {
   Edit,
   SimpleForm,
 } from 'react-admin';
-import classNames from 'classnames';
-import Icon from '@material-ui/core/Icon';
-
-export const AccountIcon = () => <Icon className={classNames('fa-menu-icon', 'fa fa-user-circle')} />
+import { Home as GrommetAccountIcon } from 'grommet-icons';
+export { GrommetAccountIcon as AccountIcon };
 
 const AccountTitle = ({ record }) => {
   return <span>{record ? `${record.username}` : ''}</span>;

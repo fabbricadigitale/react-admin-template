@@ -4,12 +4,16 @@
   "private": true,
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.45",
+    "grommet-icons": "^3.0.0",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-admin": "^2.2.2",
+    "react-admin-date-inputs": "^1.0.20",
     "react-dom": "^16.4.2",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "styled-components": "^3.4.5",
   },
   "scripts": {
     "start": "react-scripts start",
