@@ -80,7 +80,6 @@ do
 done
 
 copy_from_git 'app/public/index.html'
-copy_from_git 'app/src/index.css'
 copy_from_git 'app/package.json'
 
 cd app && yarn install && cd ..
