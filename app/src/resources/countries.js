@@ -20,6 +20,7 @@ import {
     SelectInput,
     SelectArrayInput,
     NumberInput,
+    NumberField,
 } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -92,7 +93,15 @@ const PlainCountryList = ({ classes, ...props }) => (
                             headerClassName={classes.hiddenOnSmallScreens}
                             cellClassName={classes.hiddenOnSmallScreens}                            
                             />
-                        <ChipField source="currency-code" label="Currency" />
+                        <ChipField 
+                            source="currency-code" 
+                            label="Currency" />
+                        <NumberField 
+                            source="effective-exchange-rate" 
+                            label="XCR" 
+                            options={{ maximumFractionDigits: 6 }}
+                            sortable={false} 
+                        />                            
                         <FunctionField
                             label="Dial"
                             render={record => `${record["international-prefix"]}${record["country-code"]}`}
