@@ -9,8 +9,7 @@ import {
     UPDATE,
     UPDATE_MANY,
     DELETE,
-    DELETE_MANY,
-    SORT_ASC,    
+    DELETE_MANY, 
 } from 'react-admin';
 import { snakeCase, toLower } from 'lodash';
 
@@ -45,7 +44,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const getListQuery = {
                     'page[offset]': (page - 1) * perPage,
                     'page[limit]': perPage,
-                    'sort': (order === SORT_ASC ? field : `-${field}`),
+                    'sort': (order === 'ASC' ? field : `-${field}`),
                 };
                 Object.keys(params.filter).forEach(key => {
                     getListQuery[`filter[${snakeCase(key)}]`] = params.filter[key];

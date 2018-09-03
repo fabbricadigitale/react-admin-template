@@ -27,8 +27,7 @@ import classNames from 'classnames';
 import ActionsWithExcel from '../component/ActionsWithExcel';
 import PrintToPdf from '../component/PrintToPdf';
 import FlagField from '../field/FlagField';
-import { DateTimeInput } from 'react-admin-date-inputs';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import { DateTimeInput } from '../input/DateTimeInput';
 import { Globe as GrommetCountryIcon } from 'grommet-icons';
 export { GrommetCountryIcon as CountryIcon }
 
@@ -60,14 +59,30 @@ const Filters = (props) => (
         <AutocompleteInput source="subregion" choices={subregions} />
         <AutocompleteInput source="world-region" choices={worldRegions} />
         <AutocompleteInput source="currency-code" choices={currencies} />
-        <DateTimeInput label="Updated before (UTC)" source="updated-at-leq" alwaysOn providerOptions={{ utils: MomentUtils }} />
-        <DateTimeInput label="Updated after (UTC)" source="updated-at-geq" alwaysOn providerOptions={{ utils: MomentUtils }} />        
+        <DateTimeInput 
+            label="Updated before (UTC)"
+            source="updated-at-leq" 
+            alwaysOn
+            options={{
+                showTodayButton: true, 
+                ampm: false
+            }} 
+        />
+        <DateTimeInput 
+            label="Updated after (UTC)" 
+            source="updated-at-geq" 
+            alwaysOn
+            options={{
+                showTodayButton: true, 
+                ampm: false
+            }} 
+        />        
     </Filter>
 );
 
+
 const PlainCountryList = ({ classes, ...props }) => (
     <List
-        {...props}
         sort={{
             field: 'name',
             order: 'ASC'
@@ -75,6 +90,7 @@ const PlainCountryList = ({ classes, ...props }) => (
         title="Countries"
         actions={<ActionsWithExcel />}
         filters={<Filters />}
+        {...props}
         filterDefaultValues={{
             "updated-at-leq": moment().utc().endOf('day').toISOString(),
             "updated-at-geq": moment().utc().startOf('day').toISOString(),

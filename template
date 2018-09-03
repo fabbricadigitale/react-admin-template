@@ -58,7 +58,7 @@ install_countries () {
   do
    copy_from_git "app/src/field/${file}.js"
   done   
-  cd app && yarn add react-flags
+  cd app && yarn add moment material-ui-pickers react-flags
   cp -Rf node_modules/react-flags/vendor/flags public/
   cd ..
 }
