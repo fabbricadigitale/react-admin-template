@@ -64,6 +64,8 @@ class ExportToExcel extends Component {
                 done(null)
             })
 
+        
+
     }
 
     render() {
@@ -90,7 +92,7 @@ ExportToExcel.propTypes = {
 };
 
 ExportToExcel.defaultProps = {
-    label: "Excel",
+    label: "Export",
 };
 
 export default connect(null, {

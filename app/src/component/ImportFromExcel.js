@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RaisedButton from 'material-ui/RaisedButton';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import MuiUploadIcon from '@material-ui/icons/Publish';
+import { withStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
-import Checkbox from 'material-ui/Checkbox';
-import LinearProgress from 'material-ui/LinearProgress';
 import {baseApiUrl} from '../App';
 import {SESSION_TOKEN} from '../authClient';
 
 var request = require('superagent');
 
-const styles = {
+const styles = theme => ({
     dropZone: {
         background: '#efefef',
         cursor: 'pointer',
         padding: '1rem',
         textAlign: 'center',
         color: '#999',
-        margin: '1em 0'
-    }
-};
+        margin: '1em 0',
+        fontFamily: "Work Sans,Helvetica,Arial,sans-serif",
+    },
+    preview: {},
+    leftIcon: {
+      marginRight: theme.spacing.unit,
+    },
+});
 
 class Upload extends Component {
 
@@ -29,19 +40,19 @@ class Upload extends Component {
         file: null,
         loading: false,
         error: null,
-        partial: true
+        partial: true,
     };
 
     onDrop = (files) => {
         const uploadedFile = files[0];
-        this.setState({file: uploadedFile});
+        this.setState({ file: uploadedFile });
     }
 
     handleSubmit = () => {
-        const {resource} = this.props;
-        const {file, partial} = this.state;
+        const { resource } = this.props;
+        const { file, partial } = this.state;
         const requestSessionHeaders = { 'Authorization': `Bearer ${localStorage.getItem(SESSION_TOKEN)}` };
-        this.setState({loading: true})
+        this.setState({ loading: true })
         const url = `${baseApiUrl}/upload?resource=${resource}&partial=${partial}`
         request
             .post(url)
@@ -51,86 +62,121 @@ class Upload extends Component {
     };
 
     allDone = (err, res) => {
-        if (res.status === 422) {
-            this.setState({loading: false, error: res.body.errors[0].detail})
-        } else if (res.status === 200) {
-            this.setState({loading: false, open: false})
+        if (res.status === 200) {
+            this.setState({ loading: false, open: false })
+        } else {
+            this.setState({ loading: false, error: res.body.errors[0].detail })
         }
     }
 
     handleOpen = () => {
-        this.setState({open: true});
+        this.setState({ open: true });
     };
 
     handleClose = () => {
-        this.setState({open: false});
+        this.setState({ open: false });
     };
 
     handleErrorClose = () => {
-        this.setState({error: null});
+        this.setState({ error: null });
     };
 
+    onRemove = file => () => {
+        this.props.input.onChange(null);
+    };    
+  
+
     render() {
-        const {label, style, allowFullUpload} = this.props;
-        const {file, loading, error, partial, open} = this.state;
+        const { 
+            accept,
+            children,
+            label, 
+            style, 
+            allowFullUpload, 
+            classes = {}, 
+        } = this.props;
+
+        const { 
+            file, 
+            loading, 
+            error, 
+            partial, 
+            open,
+        } = this.state;
+
         const elStyle = {
             ...style,
             display: 'inline-block'
         }
-        const actions = [ < FlatButton label = "Cancel" primary = {
-                true
-            }
-            onClick = {
-                this.handleClose
-            } />, < FlatButton label = "Submit" primary = {
-                true
-            }
-            disabled = {
-                file
-                    ? false
-                    : true
-            }
-            onClick = {
-                this.handleSubmit
-            } />
-        ];
-
-        const errorActions = [< FlatButton label = "Got it" primary = {
-                true
-            }
-            onClick = {
-                this.handleErrorClose
-            } />];
 
         return <div style={elStyle}>
-            <RaisedButton onClick={this.handleOpen} label={label}/>
-            <Dialog title="Import Data" actions={actions} modal={true} open={open}>
-                {loading
-                    ? <LinearProgress mode="indeterminate"/>
-                    : <div>
-                        Here you can import new data or update existing data.
-                        <Dropzone onDrop={this.onDrop} multiple={false} style={styles.dropZone}>
-                            {file
-                                ? <a href={file.preview}>{file.name}</a>
-                                : "Drop a file to upload, or click to select it."
+            <Button 
+                color="primary"
+                onClick={this.handleOpen}>
+                <MuiUploadIcon className={classes.leftIcon}/>
+                {label}
+            </Button>
+            <Dialog 
+                aria-labelledby="upload-dialog-title"
+                open={open}>
+                <DialogTitle id="upload-dialog-title">Import Data</DialogTitle>
+                <DialogContent>
+                    {loading
+                        ? <LinearProgress mode="indeterminate"/>
+                        : <span>
+                            <DialogContentText>
+                                Here you can import new data or update existing data.
+                            </DialogContentText>
+                            <Dropzone 
+                                onDrop={ this.onDrop } 
+                                accept={accept}
+                                multiple={false} 
+                                className={classes.dropZone}>
+                                {file
+                                    ? <a href={file.preview}>{file.name}</a>
+                                    : "Drop a .xlsx file to upload, or click to select it."
+                                }
+                            </Dropzone>
+                            {allowFullUpload && <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={ partial }
+                                        onChange={ event => this.setState({ partial: event.target.checked }) }
+                                    />}
+                                label="Keep existing records?"/>
                             }
-                        </Dropzone>
-                        {allowFullUpload && <Checkbox
-                            label={'Is this a partial update?'}
-                            defaultChecked={partial}
-                            onCheck={(event, isInputChecked) => {
-                            this.setState({partial: isInputChecked})
-                        }}/>}
-
-                    </div>
-                }
+                        </span>
+                    }
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        color="primary"
+                        onClick= { this.handleClose }>
+                        Cancel
+                    </Button>
+                    <Button 
+                        color="primary"
+                        disabled= { file ? false : true }
+                        onClick= { this.handleSubmit }>
+                        Submit
+                    </Button>                    
+                </DialogActions>
             </Dialog>
             <Dialog
-                title="An error has occurred"
-                actions={errorActions}
-                modal={true}
+                aria-labelledby="error-dialog-title"
                 open={error}>
-                {error}
+                <DialogTitle id="error-dialog-title">An error has occurred</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>{error}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        color="primary"
+                        onClick= {this.handleErrorClose}>                    
+                        Got it                    
+                    </Button>                    
+                </DialogActions>                
             </Dialog>
 
         </div>
@@ -147,6 +193,7 @@ Upload.propTypes = {
 Upload.defaultProps = {
     label: "Import",
     allowFullUpload: true,
+    accept: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
 };
 
-export default Upload;
+export default withStyles(styles)(Upload);

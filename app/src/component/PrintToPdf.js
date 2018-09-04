@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import MuiPrintIcon from '@material-ui/icons/Print';
+import { showNotification as showNotificationAction } from 'react-admin';
 import DownloadButton from '../button/DownloadButton';
 import { baseApiUrl } from '../App';
 import { SESSION_TOKEN } from '../authClient';
@@ -10,7 +12,7 @@ class PrintToPdf extends Component {
     
   download = (done) => {       
   	            
-  	const { record, resource } = this.props;
+  	const { record, resource, showNotification } = this.props;
   	const url = `${baseApiUrl}/print/${record.id}?resource=${resource}`
     const requestSessionHeaders = { 'Authorization': `Bearer ${localStorage.getItem(SESSION_TOKEN)}` };
 
@@ -30,7 +32,12 @@ class PrintToPdf extends Component {
             filename: `${record.name}.pdf`, 
             contents: response.data
         });
-    }).catch(error => console.error(error))
+    })
+    .catch(error => {
+        console.error(error)
+        showNotification('Error: could not download file', 'warning')
+        done(null)
+    })    
   	  
   }    
 
@@ -51,4 +58,7 @@ PrintToPdf.propTypes = {
     resource: PropTypes.string,
 };
 
-export default PrintToPdf;
+export default connect(null, {
+    showNotification: showNotificationAction,
+})(PrintToPdf);
+

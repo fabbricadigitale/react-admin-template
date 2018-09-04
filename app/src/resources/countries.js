@@ -92,7 +92,7 @@ const PlainCountryList = ({ classes, ...props }) => (
         }}
         pagination={<CountryPagination/>}
         title="Countries"
-        actions={<ActionsWithExcel />}
+        actions={<ActionsWithExcel hasUpload={true}/>}
         filters={<Filters />}
         {...props}
         filterDefaultValues={{

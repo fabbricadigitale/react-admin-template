@@ -2,8 +2,8 @@ import React, { cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import onlyUpdateForKeys from 'recompose/onlyUpdateForKeys';
 import { sanitizeListRestProps } from 'ra-core';
-import ExportToExcel from './ExportToExcel';
 import { CardActions, CreateButton, ExportButton, RefreshButton } from 'react-admin';
+import ExcelActions from './ExcelActions';
 
 const ActionsWithExcel = ({
     bulkActions,
@@ -15,6 +15,7 @@ const ActionsWithExcel = ({
     exporter,
     filterValues,
     hasCreate,
+    hasUpload,
     basePath,
     selectedIds,
     onUnselectItems,
@@ -48,11 +49,11 @@ const ActionsWithExcel = ({
             sort={currentSort}
             filter={filterValues}
             exporter={exporter}
-        />
-        <ExportToExcel 
+        />  
+        <ExcelActions
             resource={resource} 
-            style={{ marginLeft: 6 }} 
-            filterValues={filterValues} 
+            filterValues={filterValues}
+            hasUpload={hasUpload} 
         />
         <RefreshButton />
     </CardActions>
