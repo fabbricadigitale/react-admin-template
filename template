@@ -11,6 +11,7 @@ copy_from_git () {
 copy_files () {
     files=$1
     subpath=$2
+    [ ! -d app/src$subpath ] && mkdir app/src$subpath
     for file in "${files[@]}"
     do
         copy_from_git "app/src${subpath}/${file}.js"
@@ -18,9 +19,9 @@ copy_files () {
 }
 
 install_excel () {
-  [ ! -d app/src/button ] && mkdir app/src/button
-  [ ! -d app/src/component ] && mkdir app/src/component
-  [ ! -d app/src/input ] && mkdir app/src/input
+#   [ ! -d app/src/button ] && mkdir app/src/button
+#   [ ! -d app/src/component ] && mkdir app/src/component
+#   [ ! -d app/src/input ] && mkdir app/src/input
   button_files=('DownloadButton')
   component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel')
   input_files=('FileInput')
@@ -43,7 +44,7 @@ install_excel () {
 }
 
 install_pdf () {
-  [ ! -d app/src/component ] && mkdir app/src/component
+#   [ ! -d app/src/component ] && mkdir app/src/component
   component_files=('PrintToPdf')
   copy_files component_files, '/component'
 #   for file in "${component_files[@]}"
@@ -54,7 +55,7 @@ install_pdf () {
 }
 
 install_countries () {
-  [ ! -d app/src/field ] && mkdir app/src/field
+#   [ ! -d app/src/field ] && mkdir app/src/field
   root_files=('App.countries')
   resource_files=('countries' 'index.countries')
   field_files=('FlagField')  
@@ -81,13 +82,12 @@ install_countries () {
 }
 
 create-react-app app
-mkdir app/src/resources
-mkdir app/src/input
+# mkdir app/src/resources
+# mkdir app/src/input
 
 root_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme')
 resource_files=('accounts' 'users' 'index')
 input_files=('DateTimeInput')
-
 copy_files root_files, '' 
 copy_files resource_files, '/resources' 
 copy_files input_files, '/input'
