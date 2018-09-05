@@ -9,12 +9,12 @@ copy_from_git () {
 }
 
 copy_files () {
-    files=$1
+    files=("${!1}")
     subpath=$2
     [ ! -d app/src$subpath ] && mkdir app/src$subpath
     for file in $files
     do
-        copy_from_git "app/src${subpath}/${file}.js"
+        copy_from_git "app/src$subpath$file.js"
     done    
 }
 
@@ -61,21 +61,21 @@ ask() {
 
 install_excel () {
   component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel' 'DownloadButton')
-  copy_files "${component_files[@]}" '/component'
+  copy_files component_files[@] /component/
 }
 
 install_pdf () {
   component_files=('PrintToPdf')
-  copy_files "${component_files[@]}" '/component'
+  copy_files component_files[@] /component/
 }
 
 install_countries () {
   root_files=('App.countries')
   resource_files=('countries' 'index.countries')
   field_files=('FlagField')  
-  copy_files "${root_files[@]}" '' 
-  copy_files "${resource_files[@]}" '/resources'
-  copy_files "${field_files[@]}" '/field' 
+  copy_files root_files[@] / 
+  copy_files resource_files[@] /resources/
+  copy_files field_files[@] /field/
   mv app/src/App.countries.js app/src/App.js
   mv app/src/resources/index.countries.js app/src/resources/index.js 
   cd app && yarn add react-flags
@@ -88,9 +88,9 @@ create-react-app app
 root_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme' 'downloadFile')
 resource_files=('accounts' 'users' 'index')
 input_files=('DateTimeInput')
-copy_files "${root_files[@]}" '' 
-copy_files "${resource_files[@]}" '/resources' 
-copy_files "${input_files[@]}" '/input'
+copy_files root_files[@] /
+copy_files resource_files[@] /resources/
+copy_files input_files[@] /input/
 
 # for file in "${base_files[@]}"
 # do
