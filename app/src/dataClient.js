@@ -11,7 +11,7 @@ import {
     DELETE,
     DELETE_MANY, 
 } from 'react-admin';
-import { snakeCase, toLower } from 'lodash';
+import { snakeCase } from 'lodash';
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -96,7 +96,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
      * @returns {Object} Data response
      */
     const convertHTTPResponse = (response, type, resource, params) => {
-        const { headers, json } = response;
+        const { json } = response;
         switch (type) {
             case GET_LIST:
             case GET_MANY_REFERENCE:   

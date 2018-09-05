@@ -20,6 +20,7 @@ const ActionsWithExcel = ({
     selectedIds,
     onUnselectItems,
     showFilter,
+    uniqueKey,
     ...rest
 }) => (
     <CardActions
@@ -53,7 +54,8 @@ const ActionsWithExcel = ({
         <ExcelActions
             resource={resource} 
             filterValues={filterValues}
-            hasUpload={hasUpload} 
+            hasUpload={hasUpload}
+            uniqueKey={uniqueKey} 
         />
         <RefreshButton />
     </CardActions>

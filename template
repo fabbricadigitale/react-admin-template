@@ -63,10 +63,8 @@ install_excel () {
 #   [ ! -d app/src/button ] && mkdir app/src/button
 #   [ ! -d app/src/component ] && mkdir app/src/component
 #   [ ! -d app/src/input ] && mkdir app/src/input
-  button_files=('DownloadButton')
-  component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel')
+  component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel' 'DownloadButton')
   input_files=('FileInput')
-  copy_files button_files '/button'
   copy_files component_files '/component'
   copy_files input_files '/input'
 #   for file in "${button_files[@]}"
@@ -81,7 +79,6 @@ install_excel () {
 #   do
 #    copy_from_git "app/src/input/${file}.js"
 #   done
-  cd app && yarn add axios superagent && cd ..
 }
 
 install_pdf () {
@@ -92,7 +89,6 @@ install_pdf () {
 #   do
 #    copy_from_git "app/src/component/${file}.js"
 #   done  
-  cd app && yarn add axios && cd ..
 }
 
 install_countries () {
@@ -117,7 +113,7 @@ install_countries () {
 #   do
 #    copy_from_git "app/src/field/${file}.js"
 #   done   
-  cd app && yarn add moment material-ui-pickers react-flags
+  cd app && yarn add react-flags
   cp -Rf node_modules/react-flags/vendor/flags public/
   cd ..
 }
@@ -126,7 +122,7 @@ create-react-app app
 # mkdir app/src/resources
 # mkdir app/src/input
 
-root_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme')
+root_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme' 'downloadFile')
 resource_files=('accounts' 'users' 'index')
 input_files=('DateTimeInput')
 copy_files root_files '' 

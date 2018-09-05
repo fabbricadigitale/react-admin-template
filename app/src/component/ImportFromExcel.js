@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,14 +9,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MuiUploadIcon from '@material-ui/icons/Publish';
 import { withStyles } from '@material-ui/core/styles';
+import { showNotification as showNotificationAction } from 'react-admin';
 import Dropzone from 'react-dropzone';
 import {baseApiUrl} from '../App';
 import {SESSION_TOKEN} from '../authClient';
-
-var request = require('superagent');
 
 const styles = theme => ({
     dropZone: {
@@ -41,6 +42,7 @@ class Upload extends Component {
         loading: false,
         error: null,
         partial: true,
+        delayed: false,
     };
 
     onDrop = (files) => {
@@ -49,23 +51,50 @@ class Upload extends Component {
     }
 
     handleSubmit = () => {
-        const { resource } = this.props;
-        const { file, partial } = this.state;
-        const requestSessionHeaders = { 'Authorization': `Bearer ${localStorage.getItem(SESSION_TOKEN)}` };
+
+        const { 
+            resource,
+            uniqueKey,
+        } = this.props;
+
+        const { 
+            file, 
+            partial,
+            delayed, 
+        } = this.state;
+        
         this.setState({ loading: true })
-        const url = `${baseApiUrl}/upload?resource=${resource}&partial=${partial}`
-        request
-            .post(url)
-            .attach('file', file)
-            .set(requestSessionHeaders)
-            .end(this.allDone);
+
+        var formData = new FormData();        
+        formData.append('file', file);
+        
+        fetch(`${baseApiUrl}/upload?resource=${resource}&unique_key=${uniqueKey}&delayed=${delayed}&partial=${partial}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${localStorage.getItem(SESSION_TOKEN)}` },
+          body: formData
+        })
+        .then(response => this.parseResponse(response))
+        .catch(error => {
+            this.setState({ loading: false, error: error })
+            this.props.showNotification('Error: could not upload file', 'warning')
+        })
     };
 
-    allDone = (err, res) => {
-        if (res.status === 200) {
-            this.setState({ loading: false, open: false })
-        } else {
-            this.setState({ loading: false, error: res.body.errors[0].detail })
+    parseResponse = (response) => {
+        switch(response.status) {
+            case 200:
+                this.setState({ loading: false, open: false });
+                break;
+            case 400:                
+                response.json().then(result => {
+                    this.setState({ loading: false, error: result.errors.map(error => error.detail).join(' ') })
+                });
+                break;
+            default:
+                response.json().then(result => {
+                    this.setState({ loading: false, error: result.error })
+                });                
+                
         }
     }
 
@@ -102,6 +131,7 @@ class Upload extends Component {
             error, 
             partial, 
             open,
+            delayed,
         } = this.state;
 
         const elStyle = {
@@ -137,6 +167,7 @@ class Upload extends Component {
                                     : "Drop a .xlsx file to upload, or click to select it."
                                 }
                             </Dropzone>
+                            <FormGroup>
                             {allowFullUpload && <FormControlLabel
                                 control={
                                     <Checkbox
@@ -146,6 +177,15 @@ class Upload extends Component {
                                     />}
                                 label="Keep existing records?"/>
                             }
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        color="primary"
+                                        checked={ delayed }
+                                        onChange={ event => this.setState({ delayed: event.target.checked }) }
+                                    />}
+                                label="Import rows in the background?"/>
+                            </FormGroup>
                         </span>
                     }
                 </DialogContent>
@@ -160,7 +200,7 @@ class Upload extends Component {
                         disabled= { file ? false : true }
                         onClick= { this.handleSubmit }>
                         Submit
-                    </Button>                    
+                    </Button>                              
                 </DialogActions>
             </Dialog>
             <Dialog
@@ -196,4 +236,6 @@ Upload.defaultProps = {
     accept: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
 };
 
-export default withStyles(styles)(Upload);
+export default withStyles(styles)(connect(null, {
+    showNotification: showNotificationAction,
+})(Upload));

@@ -14,10 +14,8 @@ import {
     EditButton,
     ShowButton,
     Responsive,
-    Datagrid,
-    BulkActions
+    Datagrid,   
 } from 'react-admin';
-import classNames from 'classnames';
 import { ROLE_ADMIN, ROLE_REGULAR, ROLE_GUEST } from '../types';
 import { capitalize } from 'lodash';
 import { Group as GrommetUserIcon } from 'grommet-icons';

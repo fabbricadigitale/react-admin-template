@@ -34,6 +34,7 @@ class ExcelActions extends React.Component {
         filterValues,
         hasUpload,
         classes,
+        uniqueKey,
      } = this.props;
 
     const { anchorEl } = this.state;
@@ -56,8 +57,17 @@ class ExcelActions extends React.Component {
           onClose={this.handleClose}
           TransitionComponent={Fade}
         >
-          <MenuItem><ExportToExcel onClose={this.handleClose} resource={resource} filterValues={filterValues}/></MenuItem>
-          {hasUpload && <MenuItem><ImportFromExcel resource={resource}/></MenuItem>}
+          <MenuItem>
+            <ExportToExcel 
+              onClose={this.handleClose} 
+              resource={resource} 
+              filterValues={filterValues}/>
+          </MenuItem>
+          {hasUpload && <MenuItem>
+            <ImportFromExcel 
+              resource={resource} 
+              uniqueKey={uniqueKey}/>
+          </MenuItem>}
         </Menu>
       </div>
     );

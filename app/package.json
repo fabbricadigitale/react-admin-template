@@ -6,6 +6,8 @@
     "@babel/runtime": "7.0.0-beta.45",
     "grommet-icons": "^3.0.0",
     "jwt-decode": "^2.2.0",
+    "material-ui-pickers": "1.0.0-rc.14",
+    "moment": "^2.22.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-admin": "^2.2.2",

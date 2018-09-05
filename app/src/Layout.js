@@ -14,7 +14,6 @@ import {
     AppBar,
     Sidebar,
     Notification,
-    setSidebarVisibility,
     Error,
 } from 'react-admin';
 import Menu from './Menu';
