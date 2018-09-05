@@ -13,9 +13,7 @@ TBD
 In the directory you want the app to be created:
 
 ```
-wget https://raw.githubusercontent.com/matteolc/react-admin-template/master/template
-chmod +x template
-./template
+wget -O - https://raw.githubusercontent.com/matteolc/react-admin-template/master/template | bash
 ```
 
 ```
