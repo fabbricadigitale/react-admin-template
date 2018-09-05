@@ -7,7 +7,6 @@ import {
     Filter,
     TextInput,
     AutocompleteInput,
-    BooleanInput,
     TextField,
     EditButton,
     ShowButton,
@@ -17,14 +16,11 @@ import {
     FunctionField,
     ChipField,
     DateField,
-    SelectInput,
     SelectArrayInput,
-    NumberInput,
     NumberField,
 } from 'react-admin';
 import { Pagination } from 'react-admin';
 import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
 import ActionsWithExcel from '../component/ActionsWithExcel';
 import PrintToPdf from '../component/PrintToPdf';
 import FlagField from '../field/FlagField';

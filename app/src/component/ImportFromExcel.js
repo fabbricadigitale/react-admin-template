@@ -118,7 +118,6 @@ class Upload extends Component {
     render() {
         const { 
             accept,
-            children,
             label, 
             style, 
             allowFullUpload, 

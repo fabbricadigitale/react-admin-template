@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { baseApiUrl } from '../App';
 import MuiPrintIcon from '@material-ui/icons/Print';
