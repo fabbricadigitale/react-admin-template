@@ -12,7 +12,7 @@ copy_files () {
     files=("${!1}")
     subpath=$2
     [ ! -d app/src$subpath ] && mkdir app/src$subpath
-    for file in $files
+    for file in "${files[@]}"
     do
         copy_from_git "app/src$subpath$file.js"
     done    
