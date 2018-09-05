@@ -92,11 +92,6 @@ copy_files root_files[@] /
 copy_files resource_files[@] /resources/
 copy_files input_files[@] /input/
 
-# for file in "${base_files[@]}"
-# do
-#    copy_from_git "app/src/${file}.js"
-# done
-
 copy_from_git 'app/public/index.html'
 copy_from_git 'app/package.json'
 
@@ -108,7 +103,7 @@ fi
 if ask "Do you want to add support for PDF?"; then
     install_pdf
 fi
-if ask "Do you want to add support for Excel data import & export?"; then
+if ask "Do you want to add support for countries?"; then
     install_countries
 fi
 
