@@ -8,7 +8,6 @@ var jwtDecode = require('jwt-decode');
 
 export const SESSION_TOKEN = 'token';
 export const SESSION_ACCOUNT_ID = 'sub';
-export const SESSION_ACCOUNT_USERNAME = 'username';
 export const SESSION_ROLES = 'roles';
 
 export const requestSessionHeaders = {
@@ -41,7 +40,6 @@ export default (type, params) => {
         return fetch(request).then(response => {
             localStorage.removeItem(SESSION_TOKEN);
             localStorage.removeItem(SESSION_ACCOUNT_ID);
-            localStorage.removeItem(SESSION_ACCOUNT_USERNAME);
             localStorage.removeItem(SESSION_ROLES);
             return Promise.resolve();
         });
@@ -63,7 +61,6 @@ export default (type, params) => {
             const jwt = jwtDecode(token);
             localStorage.setItem(SESSION_TOKEN, token)
             localStorage.setItem(SESSION_ACCOUNT_ID, get(jwt, SESSION_ACCOUNT_ID))
-            localStorage.setItem(SESSION_ACCOUNT_USERNAME, get(jwt, SESSION_ACCOUNT_USERNAME))
             localStorage.setItem(SESSION_ROLES, JSON.stringify(get(jwt, SESSION_ROLES)))
             return Promise.resolve();
         });
