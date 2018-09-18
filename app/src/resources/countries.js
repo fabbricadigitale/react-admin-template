@@ -59,15 +59,6 @@ const Filters = (props) => (
         <AutocompleteInput source="world-region" choices={worldRegions} />
         <AutocompleteInput source="currency-code" choices={currencies} />
         <DateTimeInput 
-            label="Updated before (UTC)"
-            source="updated-at-leq" 
-            alwaysOn
-            options={{
-                showTodayButton: true, 
-                ampm: false
-            }} 
-        />
-        <DateTimeInput 
             label="Updated after (UTC)" 
             source="updated-at-geq" 
             alwaysOn
@@ -75,7 +66,16 @@ const Filters = (props) => (
                 showTodayButton: true, 
                 ampm: false
             }} 
-        />        
+        />       
+        <DateTimeInput 
+            label="Updated before (UTC)"
+            source="updated-at-leq" 
+            alwaysOn
+            options={{
+                showTodayButton: true, 
+                ampm: false
+            }} 
+        /> 
     </Filter>
 );
 

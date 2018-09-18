@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -29,12 +28,9 @@ const styles = theme => ({
         fontFamily: "Work Sans,Helvetica,Arial,sans-serif",
     },
     preview: {},
-    leftIcon: {
-      marginRight: theme.spacing.unit,
-    },
 });
 
-class Upload extends Component {
+class ImportFromExcel extends Component {
 
     state = {
         open: false,
@@ -83,7 +79,7 @@ class Upload extends Component {
     parseResponse = (response) => {
         switch(response.status) {
             case 200:
-                this.setState({ loading: false, open: false });
+                this.setState({ loading: false, open: false, error: null });
                 break;
             case 400:                
                 response.json().then(result => {
@@ -97,19 +93,6 @@ class Upload extends Component {
                 
         }
     }
-
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
-    handleErrorClose = () => {
-        this.setState({ error: null });
-    };
-
     onRemove = file => () => {
         this.props.input.onChange(null);
     };    
@@ -118,10 +101,10 @@ class Upload extends Component {
     render() {
         const { 
             accept,
-            label, 
             style, 
             allowFullUpload, 
             classes = {}, 
+            onClose,
         } = this.props;
 
         const { 
@@ -129,32 +112,17 @@ class Upload extends Component {
             loading, 
             error, 
             partial, 
-            open,
             delayed,
         } = this.state;
 
-        const elStyle = {
-            ...style,
-            display: 'inline-block'
-        }
-
-        return <div style={elStyle}>
-            <Button 
-                color="primary"
-                onClick={this.handleOpen}>
-                <MuiUploadIcon className={classes.leftIcon}/>
-                {label}
-            </Button>
-            <Dialog 
-                aria-labelledby="upload-dialog-title"
-                open={open}>
+        return <span>
                 <DialogTitle id="upload-dialog-title">Import Data</DialogTitle>
                 <DialogContent>
                     {loading
                         ? <LinearProgress mode="indeterminate"/>
                         : <span>
                             <DialogContentText>
-                                Here you can import new data or update existing data.
+                                {error ? error : "Here you can import new data or update existing data."}
                             </DialogContentText>
                             <Dropzone 
                                 onDrop={ this.onDrop } 
@@ -183,7 +151,7 @@ class Upload extends Component {
                                         checked={ delayed }
                                         onChange={ event => this.setState({ delayed: event.target.checked }) }
                                     />}
-                                label="Import rows in the background?"/>
+                                label="Import records in the background?"/>
                             </FormGroup>
                         </span>
                     }
@@ -191,7 +159,7 @@ class Upload extends Component {
                 <DialogActions>
                     <Button 
                         color="primary"
-                        onClick= { this.handleClose }>
+                        onClick= { onClose }>
                         Cancel
                     </Button>
                     <Button 
@@ -201,35 +169,18 @@ class Upload extends Component {
                         Submit
                     </Button>                              
                 </DialogActions>
-            </Dialog>
-            <Dialog
-                aria-labelledby="error-dialog-title"
-                open={error}>
-                <DialogTitle id="error-dialog-title">An error has occurred</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>{error}</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button 
-                        color="primary"
-                        onClick= {this.handleErrorClose}>                    
-                        Got it                    
-                    </Button>                    
-                </DialogActions>                
-            </Dialog>
-
-        </div>
+            </span>
     }
 
 }
 
-Upload.propTypes = {
+ImportFromExcel.propTypes = {
     resource: PropTypes.string,
     label: PropTypes.string,
     allowFullUpload: PropTypes.bool,
 };
 
-Upload.defaultProps = {
+ImportFromExcel.defaultProps = {
     label: "Import",
     allowFullUpload: true,
     accept: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
@@ -237,4 +188,4 @@ Upload.defaultProps = {
 
 export default withStyles(styles)(connect(null, {
     showNotification: showNotificationAction,
-})(Upload));
+})(ImportFromExcel));

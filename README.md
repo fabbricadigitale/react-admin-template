@@ -1,6 +1,6 @@
 # React-Admin-Template
 This template creates a React application using `create-react-app` bundled with 
-[react-admin](https://marmelab.com/react-admin/index.html) A frontend Framework 
+[react-admin](https://marmelab.com/react-admin/index.html), a frontend framework 
 for building admin applications running in the browser on top of REST/GraphQL APIs, 
 using ES6, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/)
 

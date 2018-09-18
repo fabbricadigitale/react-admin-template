@@ -3,6 +3,8 @@ import { Admin, Resource, fetchUtils } from 'react-admin';
 import dataClient from './dataClient';
 import authClient, { setRequestSessionHeaders } from './authClient';
 import Layout from './Layout';
+import defaultTheme from './theme';
+import logoutButton from './Logout';
 import { ROLE_ADMIN } from './types';
 import {
   AccountEdit,
@@ -12,15 +14,6 @@ import {
   UserEdit,
   UserIcon,
 } from './resources';
-
-const GetBrowserLanguage = () => {
-  if (navigator.languages !== undefined) {
-      return navigator.languages[0];
-  }
-  return navigator.language;
-}
-
-export const BrowserLocale = GetBrowserLanguage();
 
 export const baseApiUrl = process.env.REACT_APP_API_PROTOCOL && process.env.REACT_APP_API_ADDRESS && process.env.REACT_APP_API_PORT
   ? `${process.env.REACT_APP_API_PROTOCOL}://${process.env.REACT_APP_API_ADDRESS}:${process.env.REACT_APP_API_PORT}/api/v1`
@@ -40,7 +33,8 @@ export const apiClient = dataClient(baseApiUrl, httpClient);
 const App = () =>
       <Admin 
         title="Dashboard"
-        appLayout={Layout} 
+        logoutButton={logoutButton}
+        theme={defaultTheme}
         authProvider={authClient}
         dataProvider={apiClient}>
     {permissions => [

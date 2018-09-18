@@ -1,81 +1,108 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Fade from '@material-ui/core/Fade';
+import Dialog from '@material-ui/core/Dialog';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
 import MuiExcelIcon from '@material-ui/icons/GridOn';
+import { Button } from 'ra-ui-materialui';
 import ExportToExcel from './ExportToExcel';
 import ImportFromExcel from './ImportFromExcel';
 
+function TabContainer(props) {
+    return (
+      <Typography component="div" style={{ padding: 8 * 3 }}>
+        {props.children}
+      </Typography>
+    );
+  }
+
+  TabContainer.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
+
 const styles = theme => ({
-    leftIcon: {
-      marginRight: theme.spacing.unit,
+    root: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.paper,
     },
   });
 
-class ExcelActions extends React.Component {
-  state = {
-    anchorEl: null,
-  };
+class ExcelActions extends Component {
 
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+    state = {
+        open: false,
+        value: 0,
+    };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
 
-  render() {
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
-    const { 
-        resource,
-        filterValues,
-        hasUpload,
-        classes,
-        uniqueKey,
-     } = this.props;
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };   
 
-    const { anchorEl } = this.state;
+    render() {
+        const { 
+            classes,
+            resource,
+            filterValues,
+            hasUpload,
+            uniqueKey,
+        } = this.props;
 
-    return (
-      <div>
-        <Button
-          color="primary"
-          aria-owns={anchorEl ? 'simple-menu' : null}
-          aria-haspopup="true"
-          onClick={this.handleClick}
-        >
-          <MuiExcelIcon className={classes.leftIcon}/>
-          Excel
-        </Button>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
-          TransitionComponent={Fade}
-        >
-          <MenuItem>
-            <ExportToExcel 
-              onClose={this.handleClose} 
-              resource={resource} 
-              filterValues={filterValues}/>
-          </MenuItem>
-          {hasUpload && <MenuItem>
-            <ImportFromExcel 
-              resource={resource} 
-              uniqueKey={uniqueKey}/>
-          </MenuItem>}
-        </Menu>
-      </div>
-    );
-  }
+        const { 
+            open,
+            value,
+        } = this.state;
+
+        return <div className={classes.root}>
+            <Button 
+                onClick={ this.handleOpen }
+                label="Excel">
+                <MuiExcelIcon/>
+            </Button>
+            <Dialog 
+                aria-labelledby="upload-dialog-title"
+                open={open}>
+                <AppBar position="static">
+                    <Tabs 
+                        centered
+                        value={value} 
+                        onChange={this.handleChange}>
+                        <Tab label="Export" />
+                        <Tab label="Import" disabled={!hasUpload}/>
+                    </Tabs> 
+                </AppBar>
+                {value === 0 && <TabContainer>
+                    <ExportToExcel 
+                        onClose={this.handleClose} 
+                        resource={resource} 
+                        filterValues={filterValues}/>
+                </TabContainer>}
+                {value === 1 && <TabContainer>
+                    <ImportFromExcel 
+                        onClose={this.handleClose}
+                        resource={resource} 
+                        uniqueKey={uniqueKey}/>                        
+                </TabContainer>}                          
+            </Dialog>    
+        </div>
+    }
+
 }
 
-ExcelActions.defaultProps = {
-    hasUpload: false,
+ExcelActions.propTypes = {
+    resource: PropTypes.string,
+    classes: PropTypes.object.isRequired,
 };
+
 
 export default withStyles(styles)(ExcelActions);

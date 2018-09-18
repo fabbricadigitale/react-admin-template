@@ -44,14 +44,14 @@ const ActionsWithExcel = ({
                 filterValues,
                 context: 'button',
             })}
-        {hasCreate && <CreateButton basePath={basePath} />}
+        {hasCreate && <CreateButton basePath={basePath} />}        
         <ExportButton
             resource={resource}
             sort={currentSort}
             filter={filterValues}
             exporter={exporter}
         />  
-        <ExcelActions
+        <ExcelActions 
             resource={resource} 
             filterValues={filterValues}
             hasUpload={hasUpload}

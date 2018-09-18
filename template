@@ -60,7 +60,7 @@ ask() {
 }
 
 install_excel () {
-  component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel' 'DownloadButton')
+  component_files=('ExcelActions' 'ActionsWithExcel' 'ExportToExcel' 'ImportFromExcel' 'DownloadButton' 'ExportToExcelButton')
   copy_files component_files[@] /component/
 }
 
@@ -85,7 +85,7 @@ install_countries () {
 
 create-react-app app
 
-root_files=('App' 'authClient' 'dataClient' 'Layout' 'Menu' 'MyAccount' 'types' 'theme' 'downloadFile')
+root_files=('App' 'authClient' 'dataClient' 'Logout' 'types' 'theme' 'downloadFile')
 resource_files=('accounts' 'users' 'index')
 input_files=('DateTimeInput')
 copy_files root_files[@] /

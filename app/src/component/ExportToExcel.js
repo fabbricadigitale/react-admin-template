@@ -1,61 +1,55 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MuiDownloadIcon from '@material-ui/icons/GetApp';
-import { stringify } from 'query-string';
-import { baseApiUrl } from '../App';
-import { snakeCase } from 'lodash';
-import DownloadButton from './DownloadButton';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import ExportToExcelButton from './ExportToExcelButton';
 
 class ExportToExcel extends Component {
 
     render() {
-
-        const {
-            record, 
-            resource,  
-            related, 
-            filterValues, 
-            path,
+        const { 
+            onClose,
+            resource,
+            filterValues,
         } = this.props;
 
-        let query = {};
-        let url = `${baseApiUrl}/`
-
-        if (path) {
-            url = `${url}/${path}`;
-        }
-        else {
-            query = { resource };
-            filterValues && Object.keys(filterValues).forEach(key => {
-                query[`filter[${snakeCase(key)}]`] = filterValues[key];
-            })
-            query = related ? {
-                ...query,
-                related: related,
-                id: record.id
-            } : query;
-            url = `${url}download?${stringify(query)}`;
-        }
-
-        const filename = related ?
-            `${record.name}.xlsx`
-            : resource ?
-            `${resource}.xlsx`
-            : `${path.substr(0,path.indexOf('/'))}.xlsx`
-
-        return <DownloadButton
-                    icon={<MuiDownloadIcon/>}
-                    title="Export"
-                    url={url}
-                    filename={filename}/>
-
+        return <span>
+                <DialogTitle id="upload-dialog-title">Export Data</DialogTitle>
+                <DialogContent>
+                            <DialogContentText>
+                                Here you can export existing data.
+                            </DialogContentText>           
+                </DialogContent>
+                <DialogActions>
+                    <Button 
+                        color="primary"
+                        onClick= { onClose }>
+                        Cancel
+                    </Button>
+                    <ExportToExcelButton
+                        onClose={onClose}
+                        resource={resource} 
+                        filterValues={filterValues}                    
+                        />                              
+                </DialogActions>
+            </span>
     }
+
 }
 
 ExportToExcel.propTypes = {
     resource: PropTypes.string,
-    style: PropTypes.object,
+    label: PropTypes.string,
+    allowFullUpload: PropTypes.bool,
 };
 
+ExportToExcel.defaultProps = {
+    label: "Import",
+    allowFullUpload: true,
+    accept: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+};
 
 export default ExportToExcel;

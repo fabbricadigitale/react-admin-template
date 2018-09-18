@@ -1,18 +1,11 @@
 import React, { Component, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
 import MuiDownloadIcon from '@material-ui/icons/GetApp';
 import { showNotification as showNotificationAction } from 'react-admin';
 import { SESSION_TOKEN } from '../authClient';
 import downloadFile from '../downloadFile';
-
-const styles = theme => ({
-    leftIcon: {
-      marginRight: theme.spacing.unit,
-    },
-  });
+import { Button } from 'ra-ui-materialui';
 
 class DownloadButton extends Component {
 
@@ -26,6 +19,7 @@ class DownloadButton extends Component {
         url,
         filename,
         showNotification,
+        onClose,
     } = this.props;
       
     this.setState({ loading: true })
@@ -38,6 +32,7 @@ class DownloadButton extends Component {
     .then(response => response.blob())    
     .then(blob => downloadFile(blob, filename))
     .then(() => this.setState({ loading: false }))
+    .then(() => onClose && onClose())
     .catch(error => {
         this.setState({ loading: false });
         showNotification('Error: could not download file', 'warning')
@@ -60,11 +55,8 @@ class DownloadButton extends Component {
         return <Button
             onClick={!loading && this.download}
             disabled={loading}
-            color='primary'>
-                {cloneElement(icon, {
-                    className: classes.leftIcon,
-                })}                
-                {loading ? "Processing.." : title }
+            label={loading ? "Processing.." : title}>
+                {cloneElement(icon)}                
             </Button>            
     }
 }	
@@ -79,7 +71,7 @@ DownloadButton.defaultProps = {
     icon: <MuiDownloadIcon/>,
 }
 
-export default withStyles(styles)(connect(null, {
+export default connect(null, {
     showNotification: showNotificationAction,
-})(DownloadButton));
+})(DownloadButton);
 
