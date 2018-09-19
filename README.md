@@ -6,8 +6,7 @@ using ES6, [React](https://facebook.github.io/react/) and [Material Design](http
 
 The following components are provided to allow further customization of `react-admin`:
 
-+ A custom `Layout` component. Currently only used to allow for a custom menu.
-+ A custom `Menu` component. Adds a `My Account` button to allow the currently logged in user to modify its profile.
++ A custom `Logout` component. Adds a `My Account` button to allow the currently logged in user to modify its profile.
 + A custom `theme`
 + A **JSON API data client**. A data client compatible with [JSON API Resources](http://jsonapi-resources.com)
 + A **JWT auth client**. An authentication & authorization client compatible with [JSON Web Tokens](https://jwt.io/) for managing and verifying user tokens
