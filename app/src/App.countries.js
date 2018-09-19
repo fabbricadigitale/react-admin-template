@@ -2,7 +2,6 @@ import React from 'react';
 import { Admin, Resource, fetchUtils } from 'react-admin';
 import dataClient from './dataClient';
 import authClient, { setRequestSessionHeaders } from './authClient';
-import Layout from './Layout';
 import defaultTheme from './theme';
 import logoutButton from './Logout';
 import { ROLE_ADMIN } from './types';
